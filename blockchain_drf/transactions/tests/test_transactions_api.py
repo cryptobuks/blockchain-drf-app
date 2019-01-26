@@ -97,3 +97,9 @@ class PrivateTransactionsApiTest(TestCase):
             amount=payload['amount']
         ).order_by('-created_at').exists()
         self.assertTrue(exists)
+
+    def test_create_transaction_invalid(self):
+        """Test create a transaction with invalid payload"""
+        payload = {'sender': '', 'recipient': ''}
+        res = self.client.post(TRANSACTIONS_URL, payload)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
